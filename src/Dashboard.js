@@ -54,25 +54,25 @@ function Dashboard({
           xl:grid-cols-3"
       >
         <div className="left">
-          <div className="card">
+          {orgCityData.labels.length > 0 && <div className="card">
             <OrgCityPieChart orgCityData={orgCityData} />
-          </div>
-          <div className="card">
+          </div>}
+          {deviceCity.labels.length > 0 && <div className="card">
             <DeviceCityBarChart deviceCityData={deviceCity} />
-          </div>
+          </div>}
         </div>
         <div className="center">
-          <div className="card">
+          {bitRate.labels.length > 0 && <div className="card">
             <BitRatePieChart bitRateData={bitRate} />
-          </div>
-          <div className="card">
+          </div>}
+          {nvrModel.labels.length > 0 && <div className="card">
             <NvrModelBarChart nvrModelData={nvrModel} />
-          </div>
+          </div>}
         </div>
         <div className="right">
-          <div className="card">
+          {cameraModel.labels.length > 0 && <div className="card">
             <CameraModelBarChart cameraModelData={cameraModel} />
-          </div>
+          </div>}
         </div>
       </div>
     </>
