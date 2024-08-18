@@ -1,3 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-chart-yellow-DEFAULT: rgb(255, 205, 86);
+    --color-chart-yellow-light: rgba(255, 205, 86, 0.5);
+    --color-chart-blue-DEFAULT: rgb(54, 162, 235);
+    --color-chart-blue-light: rgba(54, 162, 235, 0.5);
+    --color-chart-red-DEFAULT: rgb(255, 99, 132);
+    --color-chart-red-light: rgba(255, 99, 132, 0.5);
+    --color-chart-green-DEFAULT: rgb(75, 192, 192);
+    --color-chart-green-light: rgba(75, 192, 192, 0.5);
+    --color-chart-gray-DEFAULT: rgb(201, 203, 207);
+    --color-chart-gray-light: rgba(201, 203, 207, 0.5);
+  }
+  body {
+    @apply dark:bg-custom-dark;
+  }
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -7,7 +29,40 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 22px;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+h3 {
+  margin-top: 0;
+  font-size: 18px;
+}
+
+h4 {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+h5 {
+  margin-top: 0;
+  font-size: 14px;
+}
+
+h6 {
+  margin-top: 0;
+  font-size: 12px;
+}
+
+ul {
+  padding-inline-start: 20px;
 }

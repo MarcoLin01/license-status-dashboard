@@ -1,0 +1,9 @@
+.card {
+  @apply w-full flex-col rounded-md border border-gray-200 p-4;
+}
+
+.left,
+.center,
+.right {
+  @apply flex flex-col gap-4;
+}
