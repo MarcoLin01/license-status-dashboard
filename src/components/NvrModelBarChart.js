@@ -1,15 +1,19 @@
-import { Bar } from 'react-chartjs-2'
+import { useRef, useEffect, useState } from 'react'
+import { Bar, getElementAtEvent } from 'react-chartjs-2'
 import { useThemeMode } from 'flowbite-react'
 import { getColor } from '../utils'
 
-export default function NvrModelBarChart({ nvrModelData }) {
+export default function NvrModelBarChart({ nvrModelData, handleChartClick }) {
   const { mode } = useThemeMode()
   const isLightMode = mode === 'light'
   const fontColor = isLightMode ? '#666666' : 'white'
   const gridColor = isLightMode ? '#e5e5e5' : 'white'
+  const nvrModelRef = useRef(null)
+  const [clickColor, setClickColor] = useState(null)
+  const [isClicked, setIsClicked] = useState(false)
+  const [chartData, setChartData] = useState(nvrModelData)
 
-  const data = { ...nvrModelData }
-  data.datasets[0].backgroundColor = [
+  const originalBackgroundColor = [
     getColor('yellow', isLightMode),
     getColor('blue', isLightMode),
     getColor('red', isLightMode),
@@ -51,9 +55,43 @@ export default function NvrModelBarChart({ nvrModelData }) {
     },
   }
 
+  function handleClick(event) {
+    const chart = nvrModelRef.current
+    const element = getElementAtEvent(nvrModelRef.current, event)
+    if (element.length === 0) {
+      return
+    }
+    const index = element[0].index
+    const color = chart.data.datasets[0].backgroundColor[index]
+    const label = nvrModelData.labels[index]
+    setClickColor(color)
+    setIsClicked((prev) => !prev)
+    handleChartClick('nvrModel', index, label)
+    chart.update()
+  }
+
+  useEffect(() => {
+    const newData = { ...nvrModelData }
+    setChartData({
+      labels: newData.labels,
+      datasets: [
+        {
+          data: newData.datasets[0].data,
+          backgroundColor: isClicked ? [clickColor] : originalBackgroundColor,
+        },
+      ],
+    })
+  }, [nvrModelData, isLightMode])
+
   return (
     <div className="chart-container">
-      <Bar redraw height={400} options={options} data={data} />
+      <Bar
+        ref={nvrModelRef}
+        height={400}
+        options={options}
+        data={chartData}
+        onClick={handleClick}
+      />
     </div>
   )
 }

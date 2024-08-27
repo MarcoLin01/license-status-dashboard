@@ -29,8 +29,27 @@ export const parseChartData = (data) => {
   // device city bar chart
   const deviceCityData = {}
   data.forEach((item) => {
-    if (item.city) {
-      deviceCityData[item.city] = (deviceCityData[item.city] || 0) + 1
+    if (item.organizationCity) {
+      if (!deviceCityData[item.organizationCity]) {
+        deviceCityData[item.organizationCity] = {
+          camera: 0,
+          nvr: 0,
+          nvrchannel: 0,
+        }
+      }
+      switch (item.type) {
+        case 'camera':
+          deviceCityData[item.organizationCity].camera++
+          break
+        case 'nvr':
+          deviceCityData[item.organizationCity].nvr++
+          break
+        case 'nvrchannel':
+          deviceCityData[item.organizationCity].nvrchannel++
+          break
+        default:
+          break
+      }
     }
   })
 
