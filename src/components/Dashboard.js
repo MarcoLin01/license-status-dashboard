@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import { parseChartData } from './utils'
-import OrgCityPieChart from './components/OrgCityPieChart'
-import BitRatePieChart from './components/BitRatePieChart'
-import CameraModelBarChart from './components/CameraModelBarChart'
-import DeviceCityBarChart from './components/DeviceCityBarChart'
-import NvrModelBarChart from './components/NvrModelBarChart'
+import { parseChartData } from '../utils'
+import OrgCityPieChart from './OrgCityPieChart'
+import BitRatePieChart from './BitRatePieChart'
+import CameraModelBarChart from './CameraModelBarChart'
+import DeviceCityBarChart from './DeviceCityBarChart'
+import NvrModelBarChart from './NvrModelBarChart'
 import './Dashboard.css'
 
 function Dashboard({ rawData, statistics: initialStatistics }) {
