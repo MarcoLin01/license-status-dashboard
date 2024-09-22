@@ -13,19 +13,33 @@ export default function DeviceCityBarChart({
   const gridColor = isLightMode ? '#e5e5e5' : 'white'
   const deviceCityRef = useRef(null)
   const [chartData, setChartData] = useState(deviceCityData)
+  const countryCounts = sumDeviceCountsByCountry(deviceCityData)
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false,
+        position: 'top',
+        display: true,
+        labels: {
+          color: fontColor,
+          font: { size: 14 },
+        },
       },
       title: {
         display: true,
-        text: 'Device Types by Org City',
+        text: 'Country of Device',
         color: fontColor,
         font: { size: 16, weight: 'bold', lineHeight: 2 },
+      },
+      subtitle: {
+        display: true,
+        text: `${Object.keys(countryCounts)
+          .map((country) => `${country}: ${countryCounts[country]}`)
+          .join('  ')}`,
+        color: fontColor,
+        font: { size: 14 },
       },
     },
     scales: {
@@ -46,6 +60,19 @@ export default function DeviceCityBarChart({
         },
       },
     },
+  }
+
+  function sumDeviceCountsByCountry(data) {
+    const result = {}
+    data.labels.forEach((label, index) => {
+      const countData = data.datasets[0].data[index]
+      const total = Object.values(countData).reduce(
+        (sum, count) => sum + count,
+        0,
+      )
+      result[label] = total
+    })
+    return result
   }
 
   function handleClick(event) {

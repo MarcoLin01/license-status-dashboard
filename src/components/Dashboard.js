@@ -5,6 +5,8 @@ import BitRatePieChart from './BitRatePieChart'
 import CameraModelBarChart from './CameraModelBarChart'
 import DeviceCityBarChart from './DeviceCityBarChart'
 import NvrModelBarChart from './NvrModelBarChart'
+import ChannelTypePieChart from './ChannelTypePieChart'
+import cityMapping from '../utils/cityMapping'
 import './Dashboard.css'
 
 function Dashboard({ rawData, statistics: initialStatistics }) {
@@ -41,17 +43,28 @@ function Dashboard({ rawData, statistics: initialStatistics }) {
       case 'bitRate':
         result = filterByBitRate(label)
         return result
+      case 'channelType':
+        result = filterByChannelType(label)
+        return result
       default:
         return null
     }
   }
 
   function filterByOrgCity(label) {
-    return rawData.filter((item) => item.organizationCity === label)
+    return rawData.filter((item) => {
+      const orgCity = item.organizationCity
+      const country = cityMapping[orgCity] ?? 'Unknown'
+      return country === label
+    })
   }
 
   function filterByDeviceCity(label) {
-    return rawData.filter((item) => item.organizationCity === label)
+    return rawData.filter((item) => {
+      const orgCity = item.organizationCity
+      const country = cityMapping[orgCity] ?? 'Unknown'
+      return country === label
+    })
   }
 
   function filterByCameraModel(label) {
@@ -65,7 +78,14 @@ function Dashboard({ rawData, statistics: initialStatistics }) {
   }
 
   function filterByBitRate(label) {
-    return rawData.filter((item) => item.BitRateType === label)
+    return rawData.filter((item) => item.bitRateType === label)
+  }
+
+  function filterByChannelType(label) {
+    return rawData.filter((item) => {
+      const channelType = item.channelType === '' ? 'Unknown' : item.channelType
+      return channelType === label
+    })
   }
 
   const {
@@ -78,6 +98,7 @@ function Dashboard({ rawData, statistics: initialStatistics }) {
     licenseAllocatedData,
     channelCount,
     nvrCount,
+    channelTypeData,
   } = statistics
 
   const orgCityChart = createChartData(orgCityData)
@@ -85,6 +106,7 @@ function Dashboard({ rawData, statistics: initialStatistics }) {
   const cameraModelChart = createChartData(cameraModelData)
   const nvrModelChart = createChartData(nvrModelData, 'NVR Count')
   const bitRateTypeChart = createChartData(bitRateTypeData)
+  const channelTypeChart = createChartData(channelTypeData)
 
   const { allocated, notAllocated } = licenseAllocatedData
   const total = allocated + notAllocated
@@ -169,10 +191,10 @@ function Dashboard({ rawData, statistics: initialStatistics }) {
               />
             </div>
           )}
-          {nvrModelChart && (
+          {channelTypeChart && (
             <div className="card">
-              <NvrModelBarChart
-                nvrModelData={nvrModelChart}
+              <ChannelTypePieChart
+                channelTypeData={channelTypeChart}
                 handleChartClick={handleChartClick}
               />
             </div>
@@ -183,6 +205,14 @@ function Dashboard({ rawData, statistics: initialStatistics }) {
             <div className="card">
               <CameraModelBarChart
                 cameraModelData={cameraModelChart}
+                handleChartClick={handleChartClick}
+              />
+            </div>
+          )}
+          {nvrModelChart && (
+            <div className="card">
+              <NvrModelBarChart
+                nvrModelData={nvrModelChart}
                 handleChartClick={handleChartClick}
               />
             </div>

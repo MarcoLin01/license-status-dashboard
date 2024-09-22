@@ -1,4 +1,5 @@
 import * as xlsx from 'xlsx'
+import cityMapping from './cityMapping'
 
 export const handleFileUpload = (file) => {
   return new Promise((resolve, reject) => {
@@ -20,36 +21,80 @@ export const parseChartData = (data) => {
   // org city pei chart
   const orgCityData = {}
   data.forEach((item) => {
-    if (item.organizationCity) {
-      orgCityData[item.organizationCity] =
-        (orgCityData[item.organizationCity] || 0) + 1
+    const orgCity = item.organizationCity
+    const country = cityMapping[orgCity] ?? 'Unknown'
+    const orgID = item.organizationID
+    if (!orgCityData[country]) {
+      orgCityData[country] = {
+        allOrganizations: [orgID],
+        totalOrganizations: 1,
+      }
+    } else {
+      if (!orgCityData[country].allOrganizations.includes(orgID)) {
+        orgCityData[country].allOrganizations.push(orgID)
+        orgCityData[country].totalOrganizations++
+      }
     }
   })
 
   // device city bar chart
   const deviceCityData = {}
   data.forEach((item) => {
-    if (item.organizationCity) {
-      if (!deviceCityData[item.organizationCity]) {
-        deviceCityData[item.organizationCity] = {
-          camera: 0,
-          nvr: 0,
-          nvrchannel: 0,
-        }
+    const orgCity = item.organizationCity
+    const country = cityMapping[orgCity] ?? 'Unknown'
+    if (!deviceCityData[country]) {
+      deviceCityData[country] = {
+        camera: 0,
+        nvr: 0,
+        nvrchannel: 0,
       }
-      switch (item.type) {
-        case 'camera':
-          deviceCityData[item.organizationCity].camera++
-          break
-        case 'nvr':
-          deviceCityData[item.organizationCity].nvr++
-          break
-        case 'nvrchannel':
-          deviceCityData[item.organizationCity].nvrchannel++
-          break
-        default:
-          break
-      }
+    }
+    switch (item.type) {
+      case 'camera':
+        deviceCityData[country].camera++
+        break
+      case 'nvr':
+        deviceCityData[country].nvr++
+        break
+      case 'nvrchannel':
+        deviceCityData[country].nvrchannel++
+        break
+      default:
+        break
+    }
+  })
+
+  // BitRateType pei chart
+  const bitRateTypeData = {}
+  data.forEach((item) => {
+    const bitRateType = item.bitRateType === '' ? 'Unknown' : item.bitRateType
+    bitRateTypeData[bitRateType] = (bitRateTypeData[bitRateType] || 0) + 1
+  })
+
+  // camera model bar chart
+  const cameraModelData = {}
+  data
+    .filter((item) => item.type === 'camera')
+    .forEach((item) => {
+      cameraModelData[item.model] = (cameraModelData[item.model] || 0) + 1
+    })
+
+  // nvr model bar chart
+  const nvrModelData = {}
+  data
+    .filter((item) => item.type === 'nvr')
+    .forEach((item) => {
+      nvrModelData[item.model] = (nvrModelData[item.model] || 0) + 1
+    })
+
+  // channel type pei chart
+  const channelTypeData = {}
+  data.forEach((item) => {
+    const channelType = item.channelType === '' ? 'Unknown' : item.channelType
+    if (!channelTypeData[channelType]) {
+      channelTypeData[channelType] = 1
+    } else {
+      channelTypeData[channelType]++
     }
   })
 
@@ -62,38 +107,12 @@ export const parseChartData = (data) => {
     notAllocated: data.filter((item) => item.licenseAllocated === false).length,
   }
 
-  // BitRateType pei chart
-  const bitRateTypeData = {}
-  data.forEach((item) => {
-    if (item.BitRateType) {
-      bitRateTypeData[item.BitRateType] =
-        (bitRateTypeData[item.BitRateType] || 0) + 1
-    }
-  })
-
-  // camera model bar chart
-  const cameraModelData = {}
-  data
-    .filter((item) => item.type === 'camera')
-    .forEach((item) => {
-      cameraModelData[item.model] = (cameraModelData[item.model] || 0) + 1
-    })
-
   // channel count
   const channelCount = data.filter((item) => item.type === 'nvrchannel').length
 
   // nvr count
   const nvrCount = data.filter((item) => item.type === 'nvr').length
 
-  // nvr model bar chart
-  const nvrModelData = {}
-  data
-    .filter((item) => item.type === 'nvr')
-    .forEach((item) => {
-      nvrModelData[item.model] = (nvrModelData[item.model] || 0) + 1
-    })
-
-  // final result data
   return {
     orgCityData,
     deviceCityData,
@@ -104,6 +123,7 @@ export const parseChartData = (data) => {
     nvrModelData,
     channelCount,
     nvrCount,
+    channelTypeData,
   }
 }
 

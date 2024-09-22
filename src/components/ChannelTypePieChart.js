@@ -1,27 +1,26 @@
 import { useRef, useEffect, useState } from 'react'
-import { Pie, getElementAtEvent } from 'react-chartjs-2'
+import { Doughnut, getElementAtEvent } from 'react-chartjs-2'
 import { useThemeMode } from 'flowbite-react'
 import { getColor } from '../utils'
 
-export default function OrgCityPieChart({ orgCityData, handleChartClick }) {
+export default function ChannelTypePieChart({
+  channelTypeData,
+  handleChartClick,
+}) {
   const { mode } = useThemeMode()
   const isLightMode = mode === 'light'
   const fontColor = isLightMode ? '#666666' : 'white'
-  const orgCityRef = useRef(null)
+  const channelTypeRef = useRef(null)
   const [clickColor, setClickColor] = useState(null)
   const [isClicked, setIsClicked] = useState(false)
-  const [chartData, setChartData] = useState(orgCityData)
-  const totalOrganizations = orgCityData.datasets[0].data.reduce(
-    (acc, curr) => acc + curr.totalOrganizations,
-    0,
-  )
+  const [chartData, setChartData] = useState(channelTypeData)
 
   const originalBackgroundColor = [
+    getColor('yellow', isLightMode),
+    getColor('blue', isLightMode),
     getColor('red', isLightMode),
     getColor('green', isLightMode),
-    getColor('yellow', isLightMode),
     getColor('gray', isLightMode),
-    getColor('blue', isLightMode),
     getColor('orange', isLightMode),
   ]
 
@@ -38,54 +37,45 @@ export default function OrgCityPieChart({ orgCityData, handleChartClick }) {
       },
       title: {
         display: true,
-        text: 'Country of Organization',
+        text: 'Channel Type',
         color: fontColor,
         font: { size: 16, weight: 'bold' },
-      },
-      subtitle: {
-        display: true,
-        text: `Total Organizations: ${totalOrganizations}`,
-        color: fontColor,
-        font: { size: 14 },
       },
     },
   }
 
   function handleClick(event) {
-    const chart = orgCityRef.current
-    const element = getElementAtEvent(orgCityRef.current, event)
+    const chart = channelTypeRef.current
+    const element = getElementAtEvent(channelTypeRef.current, event)
     if (element.length === 0) {
       return
     }
     const index = element[0].index
     const color = chart.data.datasets[0].backgroundColor[index]
-    const label = orgCityData.labels[index]
+    const label = channelTypeData.labels[index]
     setClickColor(color)
     setIsClicked((prev) => !prev)
-    handleChartClick('orgCity', index, label)
+    handleChartClick('channelType', index, label)
     chart.update()
   }
 
   useEffect(() => {
-    const newData = { ...orgCityData }
-    const countryData = newData.datasets[0].data.map(
-      (item) => item.totalOrganizations,
-    )
+    const newData = { ...channelTypeData }
     setChartData({
       labels: newData.labels,
       datasets: [
         {
-          data: countryData,
+          data: newData.datasets[0].data,
           backgroundColor: isClicked ? [clickColor] : originalBackgroundColor,
         },
       ],
     })
-  }, [orgCityData, isLightMode])
+  }, [channelTypeData, isLightMode])
 
   return (
     <div className="chart-container">
-      <Pie
-        ref={orgCityRef}
+      <Doughnut
+        ref={channelTypeRef}
         height={400}
         options={options}
         data={chartData}
