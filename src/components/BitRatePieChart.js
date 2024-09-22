@@ -86,7 +86,11 @@ export default function BitRatePieChart({ bitRateData, handleChartClick }) {
           onClick={handleClick}
         />
       ) : (
-        <div className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}>Bit Rate Type No Data</div>
+        <div
+          className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}
+        >
+          Bit Rate Type No Data
+        </div>
       )}
     </div>
   )

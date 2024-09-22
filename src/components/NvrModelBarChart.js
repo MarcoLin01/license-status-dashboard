@@ -78,7 +78,7 @@ export default function NvrModelBarChart({ nvrModelData, handleChartClick }) {
         datasets: [],
       })
       return
-    }     
+    }
     setChartData({
       labels: nvrModelData.labels,
       datasets: [
@@ -96,12 +96,16 @@ export default function NvrModelBarChart({ nvrModelData, handleChartClick }) {
         <Bar
           ref={nvrModelRef}
           height={400}
-        options={options}
-        data={chartData}
-        onClick={handleClick}
+          options={options}
+          data={chartData}
+          onClick={handleClick}
         />
       ) : (
-        <div className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}>NVR Model No Data</div>
+        <div
+          className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}
+        >
+          NVR Model No Data
+        </div>
       )}
     </div>
   )

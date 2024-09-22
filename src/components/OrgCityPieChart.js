@@ -76,7 +76,7 @@ export default function OrgCityPieChart({ orgCityData, handleChartClick }) {
         datasets: [],
       })
       return
-    }   
+    }
     setChartData({
       labels: orgCityData.labels,
       datasets: [
@@ -92,14 +92,18 @@ export default function OrgCityPieChart({ orgCityData, handleChartClick }) {
     <div className="chart-container">
       {chartData.datasets.length > 0 ? (
         <Pie
-        ref={orgCityRef}
-        height={400}
-        options={options}
-        data={chartData}
-        onClick={handleClick}
+          ref={orgCityRef}
+          height={400}
+          options={options}
+          data={chartData}
+          onClick={handleClick}
         />
       ) : (
-        <div className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}>Country of Organization No Data</div>
+        <div
+          className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}
+        >
+          Country of Organization No Data
+        </div>
       )}
     </div>
   )

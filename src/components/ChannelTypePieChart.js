@@ -89,7 +89,11 @@ export default function ChannelTypePieChart({
           onClick={handleClick}
         />
       ) : (
-        <div className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}>Channel Type No Data</div>
+        <div
+          className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}
+        >
+          Channel Type No Data
+        </div>
       )}
     </div>
   )

@@ -92,7 +92,7 @@ export default function DeviceCityBarChart({
         datasets: [],
       })
       return
-    }   
+    }
     if (
       deviceCityData &&
       deviceCityData.datasets &&
@@ -130,12 +130,16 @@ export default function DeviceCityBarChart({
         <Bar
           ref={deviceCityRef}
           height={400}
-        options={options}
-        data={chartData}
-        onClick={handleClick}
+          options={options}
+          data={chartData}
+          onClick={handleClick}
         />
       ) : (
-        <div className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}>Country of Device No Data</div>
+        <div
+          className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}
+        >
+          Country of Device No Data
+        </div>
       )}
     </div>
   )

@@ -85,13 +85,17 @@ export default function CameraModelBarChart({
       {chartData.datasets.length > 0 ? (
         <Bar
           ref={cameraModelRef}
-        height={600}
-        options={options}
-        data={chartData}
-        onClick={handleClick}
+          height={600}
+          options={options}
+          data={chartData}
+          onClick={handleClick}
         />
       ) : (
-        <div className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}>Camera Model No Data</div>
+        <div
+          className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}
+        >
+          Camera Model No Data
+        </div>
       )}
     </div>
   )
