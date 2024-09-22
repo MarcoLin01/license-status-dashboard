@@ -18,11 +18,11 @@ const router = createBrowserRouter([
         element: <App />,
       },
       {
-        path: '/home',
-        element: <Home />
-      }
+        path: '/dashboard',
+        element: <Home />,
+      },
     ],
-  }
+  },
 ])
 
 export default router

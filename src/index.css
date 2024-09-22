@@ -14,6 +14,8 @@
     --color-chart-green-light: rgba(75, 192, 192, 0.5);
     --color-chart-gray-DEFAULT: rgb(201, 203, 207);
     --color-chart-gray-light: rgba(201, 203, 207, 0.5);
+    --color-chart-orange-DEFAULT: rgb(251, 150, 49);
+    --color-chart-orange-light: rgba(251, 150, 49, 0.5);
   }
   body {
     @apply dark:bg-custom-dark;

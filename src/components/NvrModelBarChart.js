@@ -19,6 +19,7 @@ export default function NvrModelBarChart({ nvrModelData, handleChartClick }) {
     getColor('red', isLightMode),
     getColor('green', isLightMode),
     getColor('gray', isLightMode),
+    getColor('orange', isLightMode),
   ]
 
   const options = {

@@ -5,8 +5,8 @@
 The License Status Dashboard is a React application designed to provide a quick overview. It offers a user-friendly interface to visualize and analyze the license status of devices, including cameras, NVRs, and other related concepts.
 
 ## Website
-https://license-status-dashboard.vercel.app/
 
+https://license-status-dashboard.vercel.app/
 
 ## Available Scripts
 

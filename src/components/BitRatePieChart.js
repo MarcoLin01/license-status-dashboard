@@ -18,6 +18,7 @@ export default function BitRatePieChart({ bitRateData, handleChartClick }) {
     getColor('red', isLightMode),
     getColor('green', isLightMode),
     getColor('gray', isLightMode),
+    getColor('orange', isLightMode),
   ]
 
   const options = {
@@ -25,6 +26,7 @@ export default function BitRatePieChart({ bitRateData, handleChartClick }) {
     maintainAspectRatio: false,
     plugins: {
       legend: {
+        position: 'right',
         labels: {
           color: fontColor,
           font: { size: 14 },
