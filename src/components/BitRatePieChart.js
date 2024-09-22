@@ -57,12 +57,18 @@ export default function BitRatePieChart({ bitRateData, handleChartClick }) {
   }
 
   useEffect(() => {
-    const newData = { ...bitRateData }
+    if (bitRateData.datasets[0].data.length === 0) {
+      setChartData({
+        labels: [],
+        datasets: [],
+      })
+      return
+    }
     setChartData({
-      labels: newData.labels,
+      labels: bitRateData.labels,
       datasets: [
         {
-          data: newData.datasets[0].data,
+          data: bitRateData.datasets[0].data,
           backgroundColor: isClicked ? [clickColor] : originalBackgroundColor,
         },
       ],
@@ -71,13 +77,17 @@ export default function BitRatePieChart({ bitRateData, handleChartClick }) {
 
   return (
     <div className="chart-container">
-      <Doughnut
-        ref={bitRateRef}
-        height={400}
-        options={options}
-        data={chartData}
-        onClick={handleClick}
-      />
+      {chartData.datasets.length > 0 ? (
+        <Doughnut
+          ref={bitRateRef}
+          height={400}
+          options={options}
+          data={chartData}
+          onClick={handleClick}
+        />
+      ) : (
+        <div className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}>Bit Rate Type No Data</div>
+      )}
     </div>
   )
 }

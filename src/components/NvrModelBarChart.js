@@ -72,12 +72,18 @@ export default function NvrModelBarChart({ nvrModelData, handleChartClick }) {
   }
 
   useEffect(() => {
-    const newData = { ...nvrModelData }
+    if (nvrModelData.datasets[0].data.length === 0) {
+      setChartData({
+        labels: [],
+        datasets: [],
+      })
+      return
+    }     
     setChartData({
-      labels: newData.labels,
+      labels: nvrModelData.labels,
       datasets: [
         {
-          data: newData.datasets[0].data,
+          data: nvrModelData.datasets[0].data,
           backgroundColor: isClicked ? [clickColor] : originalBackgroundColor,
         },
       ],
@@ -86,13 +92,17 @@ export default function NvrModelBarChart({ nvrModelData, handleChartClick }) {
 
   return (
     <div className="chart-container">
-      <Bar
-        ref={nvrModelRef}
-        height={400}
+      {chartData.datasets.length > 0 ? (
+        <Bar
+          ref={nvrModelRef}
+          height={400}
         options={options}
         data={chartData}
         onClick={handleClick}
-      />
+        />
+      ) : (
+        <div className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}>NVR Model No Data</div>
+      )}
     </div>
   )
 }

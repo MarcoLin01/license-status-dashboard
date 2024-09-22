@@ -67,12 +67,18 @@ export default function OrgCityPieChart({ orgCityData, handleChartClick }) {
   }
 
   useEffect(() => {
-    const newData = { ...orgCityData }
-    const countryData = newData.datasets[0].data.map(
+    const countryData = orgCityData.datasets[0].data.map(
       (item) => item.totalOrganizations,
     )
+    if (orgCityData.datasets[0].data.length === 0) {
+      setChartData({
+        labels: [],
+        datasets: [],
+      })
+      return
+    }   
     setChartData({
-      labels: newData.labels,
+      labels: orgCityData.labels,
       datasets: [
         {
           data: countryData,
@@ -84,13 +90,17 @@ export default function OrgCityPieChart({ orgCityData, handleChartClick }) {
 
   return (
     <div className="chart-container">
-      <Pie
+      {chartData.datasets.length > 0 ? (
+        <Pie
         ref={orgCityRef}
         height={400}
         options={options}
         data={chartData}
         onClick={handleClick}
-      />
+        />
+      ) : (
+        <div className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}>Country of Organization No Data</div>
+      )}
     </div>
   )
 }

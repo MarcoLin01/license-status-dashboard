@@ -78,7 +78,10 @@ function Dashboard({ rawData, statistics: initialStatistics }) {
   }
 
   function filterByBitRate(label) {
-    return rawData.filter((item) => item.bitRateType === label)
+    return rawData.filter((item) => {
+      const bitRateType = item.bitRateType === '' ? 'Unknown' : item.bitRateType
+      return bitRateType === label
+    })
   }
 
   function filterByChannelType(label) {

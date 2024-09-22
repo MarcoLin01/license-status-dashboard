@@ -86,6 +86,13 @@ export default function DeviceCityBarChart({
   }
 
   useEffect(() => {
+    if (deviceCityData.datasets[0].data.length === 0) {
+      setChartData({
+        labels: [],
+        datasets: [],
+      })
+      return
+    }   
     if (
       deviceCityData &&
       deviceCityData.datasets &&
@@ -119,13 +126,17 @@ export default function DeviceCityBarChart({
 
   return (
     <div className="chart-container">
-      <Bar
-        ref={deviceCityRef}
-        height={400}
+      {chartData.datasets.length > 0 ? (
+        <Bar
+          ref={deviceCityRef}
+          height={400}
         options={options}
         data={chartData}
         onClick={handleClick}
-      />
+        />
+      ) : (
+        <div className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}>Country of Device No Data</div>
+      )}
     </div>
   )
 }

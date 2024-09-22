@@ -60,12 +60,18 @@ export default function ChannelTypePieChart({
   }
 
   useEffect(() => {
-    const newData = { ...channelTypeData }
+    if (channelTypeData.datasets[0].data.length === 0) {
+      setChartData({
+        labels: [],
+        datasets: [],
+      })
+      return
+    }
     setChartData({
-      labels: newData.labels,
+      labels: channelTypeData.labels,
       datasets: [
         {
-          data: newData.datasets[0].data,
+          data: channelTypeData.datasets[0].data,
           backgroundColor: isClicked ? [clickColor] : originalBackgroundColor,
         },
       ],
@@ -74,13 +80,17 @@ export default function ChannelTypePieChart({
 
   return (
     <div className="chart-container">
-      <Doughnut
-        ref={channelTypeRef}
-        height={400}
-        options={options}
-        data={chartData}
-        onClick={handleClick}
-      />
+      {chartData.datasets.length > 0 ? (
+        <Doughnut
+          ref={channelTypeRef}
+          height={400}
+          options={options}
+          data={chartData}
+          onClick={handleClick}
+        />
+      ) : (
+        <div className={`text-center font-bold ${isLightMode ? 'text-gray-500' : 'text-white'}`}>Channel Type No Data</div>
+      )}
     </div>
   )
 }
