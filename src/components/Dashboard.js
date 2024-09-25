@@ -6,12 +6,49 @@ import CameraModelBarChart from './CameraModelBarChart'
 import DeviceCityBarChart from './DeviceCityBarChart'
 import NvrModelBarChart from './NvrModelBarChart'
 import ChannelTypePieChart from './ChannelTypePieChart'
-import cityMapping from '../utils/cityMapping'
+import {
+  filterByOrgCity,
+  filterByDeviceCity,
+  filterByCameraModel,
+  filterByNvrModel,
+  filterByBitRate,
+  filterByChannelType,
+} from '../utils/filter'
 import './Dashboard.css'
 
 function Dashboard({ rawData, statistics: initialStatistics }) {
   const [activeElement, setActiveElement] = useState(null)
   const [statistics, setStatistics] = useState(initialStatistics)
+
+  const filterKey = useCallback(
+    (chartName, label) => {
+      let result = null
+      switch (chartName) {
+        case 'orgCity':
+          result = filterByOrgCity(rawData, label)
+          return result
+        case 'deviceCity':
+          result = filterByDeviceCity(rawData, label)
+          return result
+        case 'cameraModel':
+          result = filterByCameraModel(rawData, label)
+          return result
+        case 'nvrModel':
+          result = filterByNvrModel(rawData, label)
+          return result
+        case 'bitRate':
+          result = filterByBitRate(rawData, label)
+          return result
+        case 'channelType':
+          result = filterByChannelType(rawData, label)
+          return result
+        default:
+          return null
+      }
+    },
+    [rawData],
+  )
+
   useEffect(() => {
     if (activeElement) {
       const filteredData = filterKey(
@@ -23,73 +60,7 @@ function Dashboard({ rawData, statistics: initialStatistics }) {
     } else {
       setStatistics(initialStatistics)
     }
-  }, [activeElement, rawData, initialStatistics])
-
-  function filterKey(chartName, label) {
-    let result = null
-    switch (chartName) {
-      case 'orgCity':
-        result = filterByOrgCity(label)
-        return result
-      case 'deviceCity':
-        result = filterByDeviceCity(label)
-        return result
-      case 'cameraModel':
-        result = filterByCameraModel(label)
-        return result
-      case 'nvrModel':
-        result = filterByNvrModel(label)
-        return result
-      case 'bitRate':
-        result = filterByBitRate(label)
-        return result
-      case 'channelType':
-        result = filterByChannelType(label)
-        return result
-      default:
-        return null
-    }
-  }
-
-  function filterByOrgCity(label) {
-    return rawData.filter((item) => {
-      const orgCity = item.organizationCity
-      const country = cityMapping[orgCity] ?? 'Unknown'
-      return country === label
-    })
-  }
-
-  function filterByDeviceCity(label) {
-    return rawData.filter((item) => {
-      const orgCity = item.organizationCity
-      const country = cityMapping[orgCity] ?? 'Unknown'
-      return country === label
-    })
-  }
-
-  function filterByCameraModel(label) {
-    return rawData.filter(
-      (item) => item.type === 'camera' && item.model === label,
-    )
-  }
-
-  function filterByNvrModel(label) {
-    return rawData.filter((item) => item.type === 'nvr' && item.model === label)
-  }
-
-  function filterByBitRate(label) {
-    return rawData.filter((item) => {
-      const bitRateType = item.bitRateType === '' ? 'Unknown' : item.bitRateType
-      return bitRateType === label
-    })
-  }
-
-  function filterByChannelType(label) {
-    return rawData.filter((item) => {
-      const channelType = item.channelType === '' ? 'Unknown' : item.channelType
-      return channelType === label
-    })
-  }
+  }, [activeElement, rawData, initialStatistics, filterKey])
 
   const {
     orgCityData,

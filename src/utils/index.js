@@ -1,7 +1,7 @@
 import * as xlsx from 'xlsx'
 import cityMapping from './cityMapping'
 
-export const handleFileUpload = (file) => {
+export function handleFileUpload (file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = (event) => {
@@ -17,13 +17,16 @@ export const handleFileUpload = (file) => {
   })
 }
 
-export const parseChartData = (data) => {
+export function parseChartData (data) {
   // org city pei chart
   const orgCityData = {}
   data.forEach((item) => {
     const orgCity = item.organizationCity
-    const country = cityMapping[orgCity] ?? 'Unknown'
+    const country = cityMapping[orgCity]
     const orgID = item.organizationID
+    if (!country) {
+      return
+    }
     if (!orgCityData[country]) {
       orgCityData[country] = {
         allOrganizations: [orgID],
@@ -41,12 +44,16 @@ export const parseChartData = (data) => {
   const deviceCityData = {}
   data.forEach((item) => {
     const orgCity = item.organizationCity
-    const country = cityMapping[orgCity] ?? 'Unknown'
+    const country = cityMapping[orgCity]
+    if (!country) {
+      return
+    }
     if (!deviceCityData[country]) {
       deviceCityData[country] = {
         camera: 0,
         nvr: 0,
         nvrchannel: 0,
+        totalDevices: 0,
       }
     }
     switch (item.type) {
@@ -62,35 +69,50 @@ export const parseChartData = (data) => {
       default:
         break
     }
+    deviceCityData[country].totalDevices++
   })
 
   // BitRateType pei chart
   const bitRateTypeData = {}
   data.forEach((item) => {
-    const bitRateType = item.bitRateType === '' ? 'Unknown' : item.bitRateType
+    const bitRateType = item.bitRateType
+    if (!bitRateType) {
+      return
+    }
     bitRateTypeData[bitRateType] = (bitRateTypeData[bitRateType] || 0) + 1
   })
 
   // camera model bar chart
-  const cameraModelData = {}
+  const cameraModelRawData = {}
   data
     .filter((item) => item.type === 'camera')
     .forEach((item) => {
-      cameraModelData[item.model] = (cameraModelData[item.model] || 0) + 1
+      cameraModelRawData[item.model] = (cameraModelRawData[item.model] || 0) + 1
     })
+  const cameraModelData = Object.entries(cameraModelRawData)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10)
+    .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {})
 
   // nvr model bar chart
-  const nvrModelData = {}
+  const nvrModelRawData = {}
   data
     .filter((item) => item.type === 'nvr')
     .forEach((item) => {
-      nvrModelData[item.model] = (nvrModelData[item.model] || 0) + 1
+      nvrModelRawData[item.model] = (nvrModelRawData[item.model] || 0) + 1
     })
+  const nvrModelData = Object.entries(nvrModelRawData)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10)
+    .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {})
 
   // channel type pei chart
   const channelTypeData = {}
   data.forEach((item) => {
-    const channelType = item.channelType === '' ? 'Unknown' : item.channelType
+    const channelType = item.channelType
+    if (!channelType) {
+      return
+    }
     if (!channelTypeData[channelType]) {
       channelTypeData[channelType] = 1
     } else {
@@ -127,7 +149,7 @@ export const parseChartData = (data) => {
   }
 }
 
-export const getColor = (colorName, isLightMode) => {
+export function getColor (colorName, isLightMode) {
   const variant = isLightMode ? 'DEFAULT' : 'light'
   const colorVariant = `--color-chart-${colorName}-${variant}`
   const color = getComputedStyle(document.documentElement)
