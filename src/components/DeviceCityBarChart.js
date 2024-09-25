@@ -65,12 +65,8 @@ export default function DeviceCityBarChart({
   function sumDeviceCountsByCountry(data) {
     const result = {}
     data.labels.forEach((label, index) => {
-      const countData = data.datasets[0].data[index]
-      const total = Object.values(countData).reduce(
-        (sum, count) => sum + count,
-        0,
-      )
-      result[label] = total
+      const totalDevices = data.datasets[0].data[index].totalDevices
+      result[label] = totalDevices
     })
     return result
   }

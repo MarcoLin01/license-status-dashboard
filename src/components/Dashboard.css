@@ -1,9 +1,25 @@
-.card {
-  @apply w-full flex-col rounded-md border border-gray-200 p-4;
+.dashboard {
+  @apply mx-auto grid gap-4 py-5 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3;
 }
 
 .left,
 .center,
 .right {
-  @apply flex w-full flex-col gap-4;
+  @apply flex flex-col rounded-md border border-gray-200;
+}
+
+.info-card {
+  @apply flex w-full divide-x divide-gray-200 border-b border-gray-200 dark:divide-white;
+}
+
+.info-item {
+  @apply flex w-full flex-col items-center justify-center gap-2 p-4 dark:text-white;
+}
+
+.info-item-title {
+  @apply text-nowrap text-center text-lg font-black text-gray-700 dark:text-gray-400;
+}
+
+.card {
+  @apply w-full flex-col p-4;
 }

@@ -11,10 +11,6 @@ export default function OrgCityPieChart({ orgCityData, handleChartClick }) {
   const [clickColor, setClickColor] = useState(null)
   const [isClicked, setIsClicked] = useState(false)
   const [chartData, setChartData] = useState(orgCityData)
-  const totalOrganizations = orgCityData.datasets[0].data.reduce(
-    (acc, curr) => acc + curr.totalOrganizations,
-    0,
-  )
 
   const originalBackgroundColor = [
     getColor('red', isLightMode),
@@ -41,12 +37,6 @@ export default function OrgCityPieChart({ orgCityData, handleChartClick }) {
         text: 'Country of Organization',
         color: fontColor,
         font: { size: 16, weight: 'bold' },
-      },
-      subtitle: {
-        display: true,
-        text: `Total Organizations: ${totalOrganizations}`,
-        color: fontColor,
-        font: { size: 14 },
       },
     },
   }

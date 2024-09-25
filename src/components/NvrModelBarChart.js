@@ -9,20 +9,10 @@ export default function NvrModelBarChart({ nvrModelData, handleChartClick }) {
   const fontColor = isLightMode ? '#666666' : 'white'
   const gridColor = isLightMode ? '#e5e5e5' : 'white'
   const nvrModelRef = useRef(null)
-  const [clickColor, setClickColor] = useState(null)
-  const [isClicked, setIsClicked] = useState(false)
   const [chartData, setChartData] = useState(nvrModelData)
 
-  const originalBackgroundColor = [
-    getColor('yellow', isLightMode),
-    getColor('blue', isLightMode),
-    getColor('red', isLightMode),
-    getColor('green', isLightMode),
-    getColor('gray', isLightMode),
-    getColor('orange', isLightMode),
-  ]
-
   const options = {
+    indexAxis: 'y',
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -40,6 +30,7 @@ export default function NvrModelBarChart({ nvrModelData, handleChartClick }) {
       x: {
         ticks: {
           color: fontColor,
+          stepSize: 1,
         },
         grid: {
           color: gridColor,
@@ -63,10 +54,7 @@ export default function NvrModelBarChart({ nvrModelData, handleChartClick }) {
       return
     }
     const index = element[0].index
-    const color = chart.data.datasets[0].backgroundColor[index]
     const label = nvrModelData.labels[index]
-    setClickColor(color)
-    setIsClicked((prev) => !prev)
     handleChartClick('nvrModel', index, label)
     chart.update()
   }
@@ -84,7 +72,7 @@ export default function NvrModelBarChart({ nvrModelData, handleChartClick }) {
       datasets: [
         {
           data: nvrModelData.datasets[0].data,
-          backgroundColor: isClicked ? [clickColor] : originalBackgroundColor,
+          backgroundColor: [getColor('blue', isLightMode)],
         },
       ],
     })

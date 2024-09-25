@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { parseChartData } from '../utils'
 import OrgCityPieChart from './OrgCityPieChart'
 import BitRatePieChart from './BitRatePieChart'
@@ -85,24 +85,18 @@ function Dashboard({ rawData, statistics: initialStatistics }) {
   const { allocated, notAllocated } = licenseAllocatedData
   const total = allocated + notAllocated
   const licenseAllocateRate = Math.round((allocated / total) * 10000) / 100
+  const totalOrganizations = orgCityChart.datasets[0].data.reduce(
+    (acc, curr) => acc + curr.totalOrganizations,
+    0,
+  )
 
-  const infoItems = [
-    { label: 'Total Camera', value: cameraCount },
-    { label: 'License Allocate Rate', value: licenseAllocateRate, unit: '%' },
-    { label: 'Total Channel', value: channelCount },
-    { label: 'Total NVR', value: nvrCount },
-  ]
-
-  const InfoItem = ({ label, value, unit = '' }) => (
-    <div className="dark:text-white">
-      <span className="text-lg font-black uppercase text-gray-700 dark:text-gray-400">
-        {label}:{' '}
-      </span>
-      <span className="text-2xl">
-        {value}
-        {unit}
-      </span>
-    </div>
+  const mostDevicesCountry = Object.entries(deviceCityData).reduce(
+    (max, [country, info]) => {
+      return info.totalDevices > (max.totalDevices || 0)
+        ? { country, totalDevices: info.totalDevices }
+        : max
+    },
+    {},
   )
 
   function createChartData(data, label = '') {
@@ -127,36 +121,63 @@ function Dashboard({ rawData, statistics: initialStatistics }) {
     })
   }
 
+  const organizationAndDeviceItems = [
+    { label: 'Total Organizations', value: totalOrganizations },
+    { label: 'Most Devices Country', value: mostDevicesCountry.country },
+  ]
+
+  const cameraAndLicenseItems = [
+    { label: 'Total Camera', value: cameraCount },
+    { label: 'License Allocate Rate', value: licenseAllocateRate, unit: '%' },
+  ]
+
+  const nvrAndChannelItems = [
+    { label: 'Total NVR', value: nvrCount },
+    { label: 'Total Channel', value: channelCount },
+  ]
+
+  const InfoItem = ({ label, value, unit = '' }) => (
+    <div className="info-item">
+      <span className="info-item-title">{label}</span>
+      <span className="text-2xl">
+        {value}
+        {unit}
+      </span>
+    </div>
+  )
+
   return (
     <>
-      <div className="info-container grid max-w-2xl grid-cols-1 gap-4 py-4 sm:grid-cols-2">
-        {infoItems.map(({ label, value, unit }) => (
-          <InfoItem key={label} label={label} value={value} unit={unit} />
-        ))}
-      </div>
-      <div
-        className="dashboard max-w-screen-xxl mx-auto grid gap-4 py-5 sm:grid-cols-1 md:grid-cols-2
-          xl:grid-cols-3"
-      >
+      <div className="dashboard max-w-screen-xxl">
         <div className="left">
-          {orgCityChart && (
-            <div className="card">
+          <div className="info-card">
+            {organizationAndDeviceItems.map(({ label, value }) => (
+              <InfoItem key={label} label={label} value={value} />
+            ))}
+          </div>
+          <div className="card">
+            {orgCityChart && (
               <OrgCityPieChart
                 orgCityData={orgCityChart}
                 handleChartClick={handleChartClick}
               />
-            </div>
-          )}
-          {deviceCityChart && (
-            <div className="card">
+            )}
+          </div>
+          <div className="card">
+            {deviceCityChart && (
               <DeviceCityBarChart
                 deviceCityData={deviceCityChart}
                 handleChartClick={handleChartClick}
               />
-            </div>
-          )}
+            )}
+          </div>
         </div>
         <div className="center">
+          <div className="info-card">
+            {cameraAndLicenseItems.map(({ label, value, unit }) => (
+              <InfoItem key={label} label={label} value={value} unit={unit} />
+            ))}
+          </div>
           {bitRateTypeChart && (
             <div className="card">
               <BitRatePieChart
@@ -165,20 +186,25 @@ function Dashboard({ rawData, statistics: initialStatistics }) {
               />
             </div>
           )}
-          {channelTypeChart && (
+          {cameraModelChart && (
             <div className="card">
-              <ChannelTypePieChart
-                channelTypeData={channelTypeChart}
+              <CameraModelBarChart
+                cameraModelData={cameraModelChart}
                 handleChartClick={handleChartClick}
               />
             </div>
           )}
         </div>
         <div className="right">
-          {cameraModelChart && (
+          <div className="info-card">
+            {nvrAndChannelItems.map(({ label, value }) => (
+              <InfoItem key={label} label={label} value={value} />
+            ))}
+          </div>
+          {channelTypeChart && (
             <div className="card">
-              <CameraModelBarChart
-                cameraModelData={cameraModelChart}
+              <ChannelTypePieChart
+                channelTypeData={channelTypeChart}
                 handleChartClick={handleChartClick}
               />
             </div>
