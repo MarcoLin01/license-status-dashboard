@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import App from '../App'
 import Home from '../pages/Home'
 import Error from '../pages/Error'
@@ -15,11 +15,20 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <App />,
+        element: <Navigate to="/license-status-dashboard" replace />,
       },
       {
-        path: '/dashboard',
-        element: <Home />,
+        path: 'license-status-dashboard',
+        children: [
+          {
+            index: true,
+            element: <App />,
+          },
+          {
+            path: 'chart',
+            element: <Home />,
+          },
+        ],
       },
     ],
   },
