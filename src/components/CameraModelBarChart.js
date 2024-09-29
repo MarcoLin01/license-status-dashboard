@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from 'react'
 import { Bar, getElementAtEvent } from 'react-chartjs-2'
 import { useThemeMode } from 'flowbite-react'
 import { getColor } from '../utils'
+import { DATA_LABELS_OPTIONS, CHART_OPTIONS } from '../constant/options'
 
 export default function CameraModelBarChart({
   cameraModelData,
@@ -16,9 +17,10 @@ export default function CameraModelBarChart({
 
   const options = {
     indexAxis: 'y',
-    responsive: true,
-    maintainAspectRatio: false,
+    ...CHART_OPTIONS.options,
     plugins: {
+      ...DATA_LABELS_OPTIONS,
+      ...CHART_OPTIONS.plugins,
       legend: {
         display: false,
       },

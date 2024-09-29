@@ -1,7 +1,7 @@
 import * as xlsx from 'xlsx'
 import cityMapping from './cityMapping'
 
-export function handleFileUpload (file) {
+export function handleFileUpload(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = (event) => {
@@ -17,7 +17,7 @@ export function handleFileUpload (file) {
   })
 }
 
-export function parseChartData (data) {
+export function parseChartData(data) {
   // org city pei chart
   const orgCityData = {}
   data.forEach((item) => {
@@ -149,7 +149,7 @@ export function parseChartData (data) {
   }
 }
 
-export function getColor (colorName, isLightMode) {
+export function getColor(colorName, isLightMode) {
   const variant = isLightMode ? 'DEFAULT' : 'light'
   const colorVariant = `--color-chart-${colorName}-${variant}`
   const color = getComputedStyle(document.documentElement)

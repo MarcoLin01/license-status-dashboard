@@ -12,6 +12,7 @@ import {
   Title,
   SubTitle,
 } from 'chart.js'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 
 Chart.register(
   ArcElement,
@@ -22,6 +23,7 @@ Chart.register(
   Legend,
   Title,
   SubTitle,
+  ChartDataLabels,
 )
 
 function Home() {

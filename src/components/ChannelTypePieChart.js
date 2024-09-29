@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from 'react'
 import { Doughnut, getElementAtEvent } from 'react-chartjs-2'
 import { useThemeMode } from 'flowbite-react'
 import { getColor } from '../utils'
+import { DATA_LABELS_OPTIONS, CHART_OPTIONS } from '../constant/options'
 
 export default function ChannelTypePieChart({
   channelTypeData,
@@ -25,9 +26,10 @@ export default function ChannelTypePieChart({
   ]
 
   const options = {
-    responsive: true,
-    maintainAspectRatio: false,
+    ...CHART_OPTIONS.options,
     plugins: {
+      ...DATA_LABELS_OPTIONS,
+      ...CHART_OPTIONS.plugins,
       legend: {
         position: 'right',
         labels: {

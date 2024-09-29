@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from 'react'
 import { Bar, getElementAtEvent } from 'react-chartjs-2'
 import { useThemeMode } from 'flowbite-react'
 import { getColor } from '../utils'
+import { DATA_LABELS_OPTIONS, CHART_OPTIONS } from '../constant/options'
 
 export default function DeviceCityBarChart({
   deviceCityData,
@@ -16,11 +17,12 @@ export default function DeviceCityBarChart({
   const countryCounts = sumDeviceCountsByCountry(deviceCityData)
 
   const options = {
-    responsive: true,
-    maintainAspectRatio: false,
+    ...CHART_OPTIONS.options,
     plugins: {
+      ...DATA_LABELS_OPTIONS,
+      ...CHART_OPTIONS.plugins,
       legend: {
-        position: 'top',
+        position: 'bottom',
         display: true,
         labels: {
           color: fontColor,
@@ -40,6 +42,7 @@ export default function DeviceCityBarChart({
           .join('  ')}`,
         color: fontColor,
         font: { size: 14 },
+        position: 'bottom',
       },
     },
     scales: {
