@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
 import { parseChartData } from '../utils'
-import OrgCityPieChart from './OrgCityPieChart'
-import BitRatePieChart from './BitRatePieChart'
-import CameraModelBarChart from './CameraModelBarChart'
-import DeviceCityBarChart from './DeviceCityBarChart'
-import NvrModelBarChart from './NvrModelBarChart'
-import ChannelTypePieChart from './ChannelTypePieChart'
+import OrgCityPieChart from './OrgCityPieChart.jsx'
+import BitRatePieChart from './BitRatePieChart.jsx'
+import CameraModelBarChart from './CameraModelBarChart.jsx'
+import DeviceCityBarChart from './DeviceCityBarChart.jsx'
+import NvrModelBarChart from './NvrModelBarChart.jsx'
+import ChannelTypePieChart from './ChannelTypePieChart.jsx'
 import {
   filterByOrgCity,
   filterByDeviceCity,

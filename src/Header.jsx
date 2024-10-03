@@ -1,6 +1,6 @@
 import { useThemeMode } from 'flowbite-react'
-import { ReactComponent as Sun } from './icon/Sun.svg'
-import { ReactComponent as Moon } from './icon/Moon.svg'
+import Sun from './icon/Sun.svg?react'
+import Moon from './icon/Moon.svg?react'
 
 export default function Header() {
   const { mode, setMode } = useThemeMode()
