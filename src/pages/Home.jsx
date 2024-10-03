@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { handleFileUpload, parseChartData } from '../utils'
-import Dashboard from '../components/Dashboard'
+import { handleFileUpload, parseChartData } from '@/utils'
+import Dashboard from '@/components/Dashboard'
 import {
   Chart,
   ArcElement,

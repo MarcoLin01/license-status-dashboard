@@ -1,8 +1,8 @@
 import { useRef, useEffect, useState } from 'react'
 import { Bar, getElementAtEvent } from 'react-chartjs-2'
 import { useThemeMode } from 'flowbite-react'
-import { getColor } from '../utils'
-import { DATA_LABELS_OPTIONS, CHART_OPTIONS } from '../constant/options'
+import { getColor } from '@/utils'
+import { DATA_LABELS_OPTIONS, CHART_OPTIONS } from '@/constant/options'
 
 export default function CameraModelBarChart({
   cameraModelData,

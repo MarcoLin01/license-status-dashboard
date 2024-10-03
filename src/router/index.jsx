@@ -1,8 +1,8 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
-import App from '../App.jsx'
-import Home from '../pages/Home.jsx'
-import Error from '../pages/Error.jsx'
-import Layout from '../layout/index.jsx'
+import App from '@/App.jsx'
+import Home from '@/pages/Home.jsx'
+import Error from '@/pages/Error.jsx'
+import Layout from '@/layout/index.jsx'
 const router = createBrowserRouter([
   {
     path: '/',
